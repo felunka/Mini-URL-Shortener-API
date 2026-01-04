@@ -14,7 +14,5 @@ func main() {
   err := http.ListenAndServe(":"+port, r)
   if err != nil {
     log.Fatalf("Server failed to start: %v", err)
-  } else {
-    log.Println("Started!")
   }
 }

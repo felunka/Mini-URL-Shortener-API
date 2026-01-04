@@ -16,13 +16,20 @@ type Response struct {
 }
 
 func ShortenURL(w http.ResponseWriter, r *http.Request) {
+  w.Header().Set("Access-Control-Allow-Origin", "*")
+  w.Header().Set("Access-Control-Allow-Methods", "POST")
+  w.Header().Set("Access-Control-Allow-Headers", "*")
+  if r.Method == http.MethodOptions {
+    return
+  }
+
   var req Request
   err := json.NewDecoder(r.Body).Decode(&req)
   if err != nil || req.URL == "" {
     http.Error(w, "Invalid request", http.StatusBadRequest)
     return
   }
-
+  
   shortURL := storage.SaveURL(req.URL)
   resp := Response{ShortURL: shortURL}
   w.Header().Set("Content-Type", "application/json")
