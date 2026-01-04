@@ -1,0 +1,16 @@
+services:
+  shorter:
+    build: .
+    container_name: shorturl
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=reverse_proxy
+      - traefik.http.routers.shorturl.rule=Host(`short.felunka.de`)
+      - traefik.http.routers.shorturl.tls.certresolver=letsencrypt
+    restart: unless-stopped
+    networks:
+      - reverse_proxy
+      - default
+networks:
+  reverse_proxy:
+    name: reverse_proxy
